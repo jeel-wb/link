@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Social Links</title>
+    <style>
+        .logo {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+            margin: 0; /* Remove default margin */
+        }
+        .container {
+            text-align: center;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 90%; /* Limit max width */
+            width: 400px; /* Set a base width */
+        }
+        h1 {
+            font-size: 24px;
+        }
+        p {
+            font-size: 16px;
+            color: gray;
+        }
+        .links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        .link-box {
+            width: 150px;
+            margin: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            transition: background 0.3s;
+            color: white;
+        }
+        .twitter { background: #1DA1F2; }
+        .linkedin { background: #0077b5; }
+        .github { background: #333; }
+        .instagram { background: #E1306C; }
+        .website { background: red; }
+        .link-box a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+        }
+        .add-link {
+            margin-top: 20px;
+        }
+        .add-link a {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #28a745;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background 0.3s;
+            cursor: pointer;
+        }
+        .add-link a:hover { background: #218838; }
+        .modal {
+            display: none;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 90%; /* Limit max width */
+            width: 400px; /* Set a base width */
+        }
+        .modal input {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .modal button {
+            margin-top: 10px;
+            padding: 10px;
+            border: none;
+            background: #007bff;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Media Queries for Responsiveness */
+        @media (max-width: 600px) {
+            .link-box {
+                width: 100%; /* Full width on small screens */
+                margin: 5px 0; /* Adjust margin */
+            }
+            .container {
+                padding: 10px; /* Reduce padding */
+            }
+            h1 {
+                font-size: 20px; /* Adjust font size */
+            }
+            p {
+                font-size: 14px; /* Adjust font size */
+            }
+        }
+    </style>
+</head>
+<body>
+    <video class="logo" autoplay loop muted>
+        <source src="link.mp4">
+    </video>
+    <div class="container">
+        <h1>Your Name</h1>
+        <p>Welcome to my social links page!</p>
+        <div class="links" id="links">
+            <div class="link-box twitter"><a href="#" id="twitter-link" onclick="verifyHuman(event, 'twitter-link')">Twitter</a></div>
+            <div class="link-box instagram"><a href="#" id="instagram-link" onclick="verifyHuman(event, 'instagram-link')">Instagram</a></div>
+            <div class="link-box linkedin"><a href="#" id="linkedin-link" onclick="verifyHuman(event, 'linkedin-link')">LinkedIn</a></div>
+            <div class="link-box github"><a href="#" id="github-link" onclick="verifyHuman(event, 'github-link')">GitHub</a></div>
+            <div class="link-box website"><a href="#" id="website-link" onclick="verifyHuman(event, 'website-link')">Website</a></div>
+        </div>
+        <div class="add-link">
+            <a onclick="openModal()">Add Your Social Link</a>
+        </div>
+    </div>
+    
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <h2>Add Your Social Link</h2>
+            <input type="text" id="twitter" placeholder="Twitter URL">
+            <input type="text" id="instagram" placeholder="Instagram URL">
+            <input type="text" id="linkedin" placeholder="LinkedIn URL">
+            <input type="text" id="github" placeholder="GitHub URL">
+            <input type="text" id="website" placeholder="Website URL">
+            <button onclick="saveLinks()">Save</button>
+        </div>
+    </div>
+
+    <div class="modal" id="verification-modal">
+        <div class="modal-content">
+            <h2>Human Verification</h2>
+            <p>Please confirm you are not a robot.</p>
+            <button onclick="confirmVerification()">I am human</button>
+        </div>
+    </div>
+    
+    <script>
+        let pendingLink = null;
+
+        function openModal() {
+            document.getElementById("modal").style.display = "flex";
+        }
+        
+        function saveLinks() {
+            const twitter = document.getElementById("twitter").value;
+            const instagram = document.getElementById("instagram").value;
+            const linkedin = document.getElementById("linkedin").value;
+            const github = document.getElementById("github").value;
+            const website = document.getElementById("website").value;
+            
+            if (twitter) document.getElementById("twitter-link").href = twitter;
+            if (instagram) document.getElementById("instagram-link").href = instagram;
+            if (linkedin) document.getElementById("linkedin-link").href = linkedin;
+            if (github) document.getElementById("github-link").href = github;
+            if (website) document.getElementById("website-link").href = website;
+            
+            document.getElementById("modal").style.display = "none";
+        }
+
+        function verifyHuman(event, linkId) {
+            event.preventDefault();
+            pendingLink = document.getElementById(linkId).href;
+            document.getElementById("verification-modal").style.display = "flex";
+        }
+
+        function confirmVerification() {
+            if (pendingLink) {
+                window.location.href = pendingLink;
+                document.getElementById("verification-modal").style.display = "none";
+                pendingLink = null;
+            }
+        }
+    </script>
+</body>
+</html>
